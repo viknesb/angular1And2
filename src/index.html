@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../node_modules/systemjs/dist/system.src.js"></script>
+  <script src="../../node_modules/angular/angular.js"></script>
+  <script src="../../node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="../../src/app/app.js"></script>
+  <script src="../../node_modules/angular2/bundles/angular2.dev.js"></script>
+  <script src="../../node_modules/angular2/bundles/router.dev.js"></script>
+  <script>
+    System.config({
+      packages: {'app': {defaultExtension: 'js'}}
+    });
+  </script>
+</head>
+
+<body ng-app="oldApp">
+  <div ui-view></div>
+</body>
+
+</html>
