@@ -2,8 +2,9 @@
   "name": "angular1And2",
   "version": "0.0.1",
   "scripts": {
-    "postinstall": "npm run tsd",
-    "tsd": "tsd link --config src/tsd.json",
+    "postinstall": "npm run tsd-install && npm run tsd-link",
+    "tsd-install": "tsd install --config src/tsd.json",
+    "tsd-link": "tsd link --config src/tsd.json",
     "tsc": "tsc -p src -w",
     "start": "live-server --open=src"
   },
