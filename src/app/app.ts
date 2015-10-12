@@ -5,12 +5,13 @@ module ng1App {
   configFn.$inject = ['$stateProvider', '$urlRouterProvider'];
   export function configFn($stateProvider : angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider) {
 
-  $urlRouterProvider.otherwise(function($injector: angular.auto.IInjectorService, $location: angular.ILocationService){
-        // Uncommenting these will get refresh on deepstates to work but will still has other problem
-        // Will have to see if using ng-router in Angular 1 solves this problem
-        //var $state = $injector.get('$state');
-        //$state.transitionTo('home.state2.angular2');
-    });
+  $urlRouterProvider.otherwise('/home');
+  // Uncommenting these will get refresh on deepstates to work but will still has other problem
+  // Will have to see if using ng-router in Angular 1 solves this problem
+  /*$urlRouterProvider.otherwise(function($injector: angular.auto.IInjectorService, $location: angular.ILocationService){
+        var $state = $injector.get('$state');
+        $state.transitionTo('home.state2.angular2');
+  });*/
 
   $stateProvider
     .state('home', {
