@@ -5,18 +5,12 @@ var gulp = require('gulp'),
 	config = new Config(),
 	del = require('del'),
 	browserSync = require('browser-sync'),
-	wiredep = require('wiredep').stream;
+	wiredep = require('wiredep').stream,
+    tsProject = glp.typescript.createProject(config.tsConfig);
 	
 // Clean up the build directory
 gulp.task('clean', function (done) {
 	return del([config.buildDir, config.tmpDir], done);
-});
-
-// Look for Javascript code problems.
-gulp.task('vet', function() {
-	return gulp.src(config.appJSFile)
-		.pipe(glp.jshint())
-		.pipe(glp.jshint.reporter('jshint-stylish'), {verbose: true});
 });
 
 /*gulp.task('lib-gen', function() {		
@@ -27,6 +21,48 @@ gulp.task('vet', function() {
         .pipe(gulp.dest(config.libDir));
 });*/
 
+// Look for Javascript code problems.
+gulp.task('vet', function() {
+	return gulp.src(config.appJSFile)
+		.pipe(glp.jshint())
+		.pipe(glp.jshint.reporter('jshint-stylish'), {verbose: true});
+});
+
+gulp.task('ts-lint', function () {
+    return gulp.src(config.appTSFile)
+                .pipe(glp.tslint())
+                .pipe(glp.tslint.report('prose'));
+});
+
+
+// Compile TypeScript and include references to library and app .d.ts files.
+gulp.task('compile-ts', function () {
+    var sourceTsFiles = [].concat(config.appTSFile, //path to typescript files
+                         [config.tsdFile]); //reference to library .d.ts files
+                        
+    var tsResult = gulp.src(sourceTsFiles)
+                       .pipe(glp.sourcemaps.init())
+                       .pipe(glp.typescript(tsProject));
+
+    tsResult.dts.pipe(gulp.dest(config.appDir));
+    return tsResult.js
+            .pipe(glp.sourcemaps.write('.'))
+            .pipe(gulp.dest(config.appDir));
+});
+
+// Remove all generated JavaScript files from TypeScript compilation
+gulp.task('clean-ts', function (cb) {
+  var typeScriptGenFiles = [
+        config.appDir +'/**/*.js',    // path to all JS files auto gen'd by editor
+        config.appDir +'/**/*.js.map', // path to all sourcemap files auto gen'd by editor
+        '!' + config.appDir + '/lib.def.js'
+      ];
+  del(typeScriptGenFiles, cb);
+});
+
+gulp.task('watch', function() {
+    gulp.watch([config.appTSFile], ['ts-lint', 'compile-ts']);
+});
 
 // Create $templateCache from the html templates
 gulp.task('template-cache', ['clean'], function() {
@@ -42,7 +78,7 @@ gulp.task('template-cache', ['clean'], function() {
 
 // Wiring the bower dependencies into the html
 // Also injecting our application JS and CSS
-gulp.task('wire-dep', function() {
+gulp.task('wire-dep', ['compile-ts'], function() {
 
     return gulp
         .src(config.indexHTMLFile)
@@ -57,7 +93,7 @@ gulp.task('minify', ['clean', 'wire-dep', 'template-cache'], function() {
 	
 	var assets = glp.useref.assets();
     // Filters are named for the gulp-useref path
-	// It looks for build tags with the given pattern
+	// It looks for build tags in index.html with the given pattern
     var cssFilter = glp.filter('**/all.css');
     var jsAppFilter = glp.filter('**/app.js');
     var jsLibFilter = glp.filter('**/lib.js');
@@ -98,20 +134,20 @@ function startServer(isDev) {
 	console.log('Starting browserSync...\n');
 	browserSync({
 		port: 8080,
-		files: [],
+		files: isDev ? ['**/*.html', '**/*.ts', '**/*.js', '**/*.css'] : [],
 		injectChanges: true,
 		logFileChanges: false,
 		logLevel: 'silent',
 		notify: true,
-		reloadDelay: 0,
+		reloadDelay: 1000,
 		server: {
-		  baseDir: isDev ? './src' : './build'
+		  baseDir: isDev ? config.sourceDir : config.buildDir
 		}
 	});
 }
 
 // Start server and serve dev build
-gulp.task('serve-dev', ['dev'], function() {
+gulp.task('serve-dev', ['dev', 'watch'], function() {
 	var isDev = true;
     startServer(isDev);
 });
@@ -125,5 +161,6 @@ gulp.task('serve-prod', ['prod'], function() {
 
 gulp.task('dev', ['clean', 'vet', 'wire-dep']);
 gulp.task('prod', ['clean', 'minify']);
+
 // default task
 gulp.task('default', ['dev']);

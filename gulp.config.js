@@ -16,8 +16,11 @@ var GulpConfig = (function() {
 		
 		// Order matters here
 		this.appJSFile = [this.appDir + '/app.js', this.appDir + '/app.controllers.js'];
-		
 		this.appCSSFile = this.sourceDir + '/css/**/*.css';
+		
+		this.appTSFile = [this.appDir + '/app.ts', this.appDir + '/app.controllers.ts'];
+		this.tsConfig = this.sourceDir + '/tsconfig.json';
+		this.tsdFile = this.sourceDir + '/typings/tsd.d.ts'; 
 	}
 	return gulpConfig;
 })();
