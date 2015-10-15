@@ -1,6 +1,5 @@
 {
   "name": "angular1And2",
-  "version": "0.0.0",
   "authors": [
     "Viknes Balasubramanee <viknesb@pernixdata.com>"
   ],
@@ -10,7 +9,6 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
     "test",
     "tests"
   ],
@@ -25,8 +23,8 @@
   "overrides": {
     "bootstrap": {
       "main": [
-        "dist/css/bootstrap.css",
-        "dist/js/bootstrap.js"
+        "./dist/css/bootstrap.css",
+        "./dist/js/bootstrap.js"
       ]
     }
   }

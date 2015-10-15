@@ -32,7 +32,7 @@ module ng1App {
     })
     .state('home.state2', {
       url: "/state2",
-      templateUrl: 'test/state2.html', 
+      templateUrl: 'app/state2/state2.html', 
       controllerAs: 'HomeState2Ctrl',
       controller: HomeState2Ctrl
     })

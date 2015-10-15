@@ -91,43 +91,39 @@ function inject(src, label) {
 	if (label) {
         options.name = 'inject:' + label;
     }
-
     return glp.inject(gulp.src(src), options);
 }
 
 function startServer(isDev) {
-	process.stdout.write('Starting browserSync...\n');
+	console.log('Starting browserSync...\n');
 	browserSync({
 		port: 8080,
-		files: ['**/*.html', '**/*.js', '**/*.css'],
+		files: [],
 		injectChanges: true,
 		logFileChanges: false,
 		logLevel: 'silent',
 		notify: true,
 		reloadDelay: 0,
 		server: {
-		  baseDir: isDev ? './' : './build',
-          routes: {
-            "/": "src"
-          }
+		  baseDir: isDev ? './src' : './build'
 		}
 	});
 }
 
 // Start server and serve dev build
-gulp.task('serve-dev', ['wire-dep'], function() {
+gulp.task('serve-dev', ['dev'], function() {
 	var isDev = true;
     startServer(isDev);
 });
 
 // Start server and serve prod build
-gulp.task('serve-prod', ['minify'], function() {
+gulp.task('serve-prod', ['prod'], function() {
 	var isDev = false;
     del(config.tmpDir);
     startServer(isDev);
 });
 
-gulp.task('dev', ['clean', 'vet', 'serve-dev']);
-gulp.task('prod', ['clean', 'serve-prod']);
+gulp.task('dev', ['clean', 'vet', 'wire-dep']);
+gulp.task('prod', ['clean', 'minify']);
 // default task
 gulp.task('default', ['dev']);
