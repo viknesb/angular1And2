@@ -1,5 +1,7 @@
 module ng1App {
-  angular.module('oldApp', ['ui.router'])
+  // Used only in prod build for injecting templates as JS
+  
+  angular.module('oldApp', ['ui.router', 'templates'])
   .config(configFn);
     
   configFn.$inject = ['$stateProvider', '$urlRouterProvider'];
@@ -16,15 +18,13 @@ module ng1App {
   $stateProvider
     .state('home', {
       url: "/home",
-      template: "<div>" +
-      "<a class='link' ng-click='HomeCtrl.gotoState();'><h1>Angular 1 App </h1></a><br>" + 
-      "<a class='link' href='' ng-click='HomeCtrl.gotoState(1);'>State 1</a><a class='link' href='' ng-click='HomeCtrl.gotoState(2);'>State 2</a><br><div ui-view></div></div>",
+      templateUrl: 'app/home.html',
       controllerAs: 'HomeCtrl',
       controller: HomeCtrl
     })
     .state('home.state1', {
       url: "/state1",
-      template: "<h2> {{HomeState1Ctrl.msg}} </h2>",
+      templateUrl: "app/state1/state1.html",
       controllerAs: 'HomeState1Ctrl',
       controller: function() {
         this.msg = "This is State 1 Page";
@@ -32,15 +32,7 @@ module ng1App {
     })
     .state('home.state2', {
       url: "/state2",
-      template: "<div>" +
-                  "<h2> This is state2 page</h2>" +
-                  "<div>" + 
-                    "<a class='link' href='' ng-click='HomeState2Ctrl.gotoState(1);'>List</a>" + 
-                    "<a class='link' href='' ng-click='HomeState2Ctrl.gotoState(2);'>Set</a>" + 
-                    "<a class='link' href='' ng-click='HomeState2Ctrl.gotoState(3);'>Angular 2</a>" +
-                  "</div><br>" +
-                  "<div ui-view></div>" +
-                "</div>",
+      templateUrl: 'test/state2.html', 
       controllerAs: 'HomeState2Ctrl',
       controller: HomeState2Ctrl
     })
@@ -62,9 +54,7 @@ module ng1App {
     })
     .state('home.state2.angular2', {
       url: "/angular2",
-      template: "<div>" +
-                  "<my-app path='{{HomeState2Angular2Ctrl.relativePath}}'>Loading...</my-app>" +
-                "</div>",
+      templateUrl: 'app/state2/angular2/ag2.html',
       controllerAs: 'HomeState2Angular2Ctrl',
       controller: HomeState2Angular2Ctrl
     });
