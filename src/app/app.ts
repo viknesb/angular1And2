@@ -1,5 +1,4 @@
 module ng1App {
-  // Used only in prod build for injecting templates as JS
   
   angular.module('oldApp', ['ui.router', 'templates'])
   .config(configFn);
