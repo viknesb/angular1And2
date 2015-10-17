@@ -4,13 +4,19 @@ Simple starter example that shows you how to mix Angular 2 app with Angular 1. F
 
 ##Getting Started
 
+Before getting started make sure you have the latest version of node, bower, gulp globally installed.
+
 1. Clone this repo
 
 1. Run `npm install`
 
-1. Run the TypeScript compiler and watch for changes `npm run tsc`
+1. Run the build version by command 'gulp serve-dev' and prod version by 'gulp serve-prod'
 
-1. Open 2nd terminal and launch the app in the browser `npm start`
+1. The dev version should serve the app and watch for changes in typescript and recompile project.
+
+Optional:
+
+Run the TypeScript compiler and watch for changes `npm run tsc`
 
 ## Running Node and NPM
 
