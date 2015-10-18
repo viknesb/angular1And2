@@ -10,7 +10,7 @@ Before getting started make sure you have the latest version of node, bower, gul
 
 1. Run `npm install`
 
-1. Run the build version by command 'gulp serve-dev' and prod version by 'gulp serve-prod'
+1. Run the build version by command `gulp serve-dev` and prod version by `gulp serve-prod`
 
 1. The dev version should serve the app and watch for changes in typescript and recompile project.
 
