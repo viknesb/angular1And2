@@ -55,7 +55,7 @@ module ng1App {
       if(angular2App = window.angular2App) {
         angular2App.init();
       } else {
-        System.import('app/bootstrap');
+        System.import('src/app/bootstrap');
       }
           
     }

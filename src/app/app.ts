@@ -17,13 +17,13 @@ module ng1App {
   $stateProvider
     .state('home', {
       url: "/home",
-      templateUrl: 'app/home.html',
+      templateUrl: 'src/app/home.html',
       controllerAs: 'HomeCtrl',
       controller: HomeCtrl
     })
     .state('home.state1', {
       url: "/state1",
-      templateUrl: "app/state1/state1.html",
+      templateUrl: "src/app/state1/state1.html",
       controllerAs: 'HomeState1Ctrl',
       controller: function() {
         this.msg = "This is State 1 Page";
@@ -31,7 +31,7 @@ module ng1App {
     })
     .state('home.state2', {
       url: "/state2",
-      templateUrl: 'app/state2/state2.html', 
+      templateUrl: 'src/app/state2/state2.html', 
       controllerAs: 'HomeState2Ctrl',
       controller: HomeState2Ctrl
     })
@@ -53,7 +53,7 @@ module ng1App {
     })
     .state('home.state2.angular2', {
       url: "/angular2",
-      templateUrl: 'app/state2/angular2/ag2.html',
+      templateUrl: 'src/app/state2/angular2/ag2.html',
       controllerAs: 'HomeState2Angular2Ctrl',
       controller: HomeState2Angular2Ctrl
     });

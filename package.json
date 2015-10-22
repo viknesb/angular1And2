@@ -12,14 +12,15 @@
     "angular": "^1.4.7",
     "angular-ui-router": "^0.2.15",
     "angular2": "2.0.0-alpha.40",
+    "bootstrap": "^3.3.5",
     "systemjs": "0.19.2"
   },
   "devDependencies": {
-    "bower": "^1.5.3",
     "browser-sync": "^2.9.11",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-angular-templatecache": "^1.8.0",
+    "gulp-browserify": "^0.5.1",
     "gulp-filter": "^2.0.2",
     "gulp-inject": "^3.0.0",
     "gulp-jshint": "^1.11.2",

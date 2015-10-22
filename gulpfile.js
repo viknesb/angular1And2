@@ -13,14 +13,6 @@ gulp.task('clean', function (done) {
 	return del([config.buildDir, config.tmpDir], done);
 });
 
-/*gulp.task('lib-gen', function() {		
-	var v =  browserify();
-	return v.add('./src/app/lib.def.js')
-        .bundle()
-        .pipe(source(config.libJSFileName))
-        .pipe(gulp.dest(config.libDir));
-});*/
-
 // Look for Javascript code problems.
 gulp.task('vet', function() {
 	return gulp.src(config.appJSFile)
@@ -72,24 +64,24 @@ gulp.task('template-cache', ['clean'], function() {
 		// While minification do not remove empty attributes
         .pipe(glp.minifyHtml({ empty:true }))
 		// Creates a module called 'templates' and puts the HTML as JS within it.
-        .pipe(glp.angularTemplatecache(config.templatesFileName, {standalone: true}))
+        .pipe(glp.angularTemplatecache(config.templatesFileName, {root: 'src/', standalone: true}))
         .pipe(gulp.dest(config.tmpDir));
 });
 
-// Wiring the bower dependencies into the html
-// Also injecting our application JS and CSS
-gulp.task('wire-dep', ['compile-ts'], function() {
 
+gulp.task('inject', function() {
+    
     return gulp
         .src(config.indexHTMLFile)
-        .pipe(wiredep({ directory: config.bowerDir }))
-        .pipe(inject(config.appJSFile))
+        .pipe(inject(config.libJSFile, 'libjs'))
+        .pipe(inject(config.libCSSFile, 'libcss'))
+		.pipe(inject(config.appJSFile))
 		.pipe(inject(config.appCSSFile))
-        .pipe(gulp.dest(config.sourceDir));
+        .pipe(gulp.dest(config.baseDir));
 });
 
 // Concat and minify the JS code
-gulp.task('minify', ['clean', 'wire-dep', 'template-cache'], function() {
+gulp.task('minify', ['clean', 'inject', 'template-cache'], function() {
 	
 	var assets = glp.useref.assets();
     // Filters are named for the gulp-useref path
@@ -141,7 +133,7 @@ function startServer(isDev) {
 		notify: true,
 		reloadDelay: 1000,
 		server: {
-		  baseDir: isDev ? config.sourceDir : config.buildDir
+		  baseDir: isDev ? '.' : config.buildDir
 		}
 	});
 }
@@ -159,7 +151,7 @@ gulp.task('serve-prod', ['prod'], function() {
     startServer(isDev);
 });
 
-gulp.task('dev', ['clean', 'vet', 'wire-dep']);
+gulp.task('dev', ['clean', 'vet', 'inject']);
 gulp.task('prod', ['clean', 'minify']);
 
 // default task
